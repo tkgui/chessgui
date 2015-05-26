@@ -1,0 +1,18 @@
+$self->{settings} = {
+                      'cutoff' => 5000,
+                      'engine_depth' => '7',
+                      'max_depth' => '3',
+                      'depth_percent' => '70',
+                      'atomkraft_on' => 1,
+                      'pulsar_on' => 1,
+                      'show_pgn' => '0',
+                      'show_legal_moves' => '1',
+                      'pgn_dir' => 'C:/Unzip/ChessGUI/Pgn/',
+                      'book_dir' => 'C:/Unzip/ChessGUI/Pgn/game.eval.txt',
+                      'dump_depth' => '10',
+                      'update_status_bar' => '1',
+                      'book_name' => 'game.eval.txt',
+                      'book_extension' => 'eval.txt',
+                      'multipv' => 3,
+                      'minimax_after' => '5'
+                    };
