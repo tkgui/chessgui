@@ -1,1 +1,0 @@
-{"g1g6":{"comment":"...","fen_after":"2r4r/p2q4/1p2k1R1/1P2pp2/7p/3Q1P1P/4KP2/R7 b - -","visited":1}}

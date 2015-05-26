@@ -1,1 +1,0 @@
-{"e7f8":{"comment":"...","visited":"1","fen_after":"3b1k2/8/3p4/2p2BNP/1pPp1Pp1/1b1P4/5K2/8 w - -"},"e7f6":{"comment":"...","visited":2,"fen_after":"3b4/8/3p1k2/2p2BNP/1pPp1Pp1/1b1P4/5K2/8 w - -"}}
