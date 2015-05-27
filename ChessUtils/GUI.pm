@@ -945,17 +945,17 @@ sub update_uci_engine
 			
 			$depth=$1;
 			
-			$uci=~/score cp ([^\s]+)/;
+			my $cp;
 			
-			my $cp=$1;
+			if($uci=~/score cp ([^\s]+)/){$cp=$1;}
 			
-			$uci=~/score mate ([^\s]+)/;
+			my $mate;
+			
+			if($uci=~/score mate ([^\s]+)/){$mate=$1;}
 			
 			my $mate=$1;
 			
 			$score=$cp ne ''?"$cp":"mate $mate";
-			
-			my $cp=$1;
 			
 			$msg="$depth $best $score $pv_short";
 			
@@ -2042,6 +2042,29 @@ sub show_pgn
 	$show_pgn_text->insert('end',$full_pgn);
 }
 
+sub del_pgn
+{
+	my $self=shift;
+	
+	return if $self->{analysis_mode};
+	
+	my $dir=$self->{pgn_dir}->get('1.0','end-1c');
+	
+	$answer = $self->{mw}->Dialog(-title => 'Deleting $dir!',
+			
+			-width=> 30,
+			-text => 'Are you sure?', 
+			-default_button => 'No !', -buttons => [ 'No !','Yes :(' ], 
+			-bitmap => 'question' )->Show( );
+			   
+	return if $answer=~/No/;
+	
+	my $path="$self->{settings}->{pgn_dir}$dir";
+	
+	unlink($path);
+	
+}
+
 sub copy_pgn
 {
 	my $self=shift;
@@ -2766,7 +2789,7 @@ sub show_pgn_motion
 	
 	my $rel=($self->{pgn_list_size}-1-$index)/$self->{pgn_list_size};
 	
-	print "dir: $dir index: $index\n";
+	#print "dir: $dir index: $index\n";
 	
 	$self->{show_pgn_boards}->yviewMoveto($rel);
 	
@@ -3471,7 +3494,10 @@ sub new
 		$self->{pgn_frame}->Label(-text=>'File')->pack(-pady=>1);
 		$self->{pgn_dir}=$self->{pgn_frame}->Text(%pgn_header_text_attr)->pack();
 		
-		$self->{pgn_frame}->Button(-text=>"Save PGN",-command=>[\&copy_pgn,$self,1])->pack(-pady=>1);
+		$self->{pgn_save_frame}=$self->{pgn_frame}->Frame->pack(-pady=>1);
+		
+		$self->{pgn_save_frame}->Button(-text=>"Save PGN",-command=>[\&copy_pgn,$self,1])->pack(-pady=>1,-side=>'left');
+		$self->{pgn_save_frame}->Button(-text=>" X ",-command=>[\&del_pgn,$self])->pack(-pady=>1,-padx=>5,-side=>'left');
 		
 		$self->{numbered_save_load_frame}=$self->{save_load_frame}->Frame(-borderwidth=>'2',-relief=>'raised',-padx=>3,-pady=>3)->pack;
 		$self->{load_frame}=$self->{numbered_save_load_frame}->Frame(-borderwidth=>'2',-relief=>'raised',-padx=>3,-pady=>3)->pack(-side=>'left');
