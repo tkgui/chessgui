@@ -2753,6 +2753,25 @@ sub dump_recursive
 	
 }
 
+sub show_pgn_motion
+{
+	shift;
+	my $self=shift;
+	
+	my $coords=Utils::split_text_index($self->{show_pgn_text}->index('current'));
+
+	my $dir=$self->{show_pgn_text}->get("$coords->{y}.0","$coords->{y}.120");
+	
+	my $index=$self->{pgn_dir_list}->{$dir};
+	
+	my $rel=($self->{pgn_list_size}-1-$index)/$self->{pgn_list_size};
+	
+	print "dir: $dir index: $index\n";
+	
+	$self->{show_pgn_boards}->yviewMoveto($rel);
+	
+}
+
 sub load_pgn
 {
 
@@ -2777,6 +2796,9 @@ sub load_pgn
 		
 		if($extension eq 'pgn')
 		{
+		
+			$self->{show_pgn_text}->bind('<Motion>',[\&show_pgn_motion,$self]);
+		
 			$self->{show_pgn_boards}=$self->{show_pgn}->Scrolled('Text',%pgn_text_attr,-foreground=>'#000000',
 				-font => [ -family => 'Chess Merida', -size => 14 ],
 				-width=>12,-height=>34,-scrollbars=>'e',-insertontime=>0)->pack(-side=>'right');
@@ -2856,6 +2878,8 @@ sub load_pgn
 					
 					$self->{pgn_list}->{$index}=$dir;
 					
+					$self->{pgn_dir_list}->{$dir}=$index;
+					
 					$index++;
 				
 				}
@@ -2867,6 +2891,8 @@ sub load_pgn
 	}
 	
 	$self->{pgn_list_size}=$index;
+	
+	$self->{pgn_dir_list_size}=@dirs;
 	
 }
 
@@ -3131,11 +3157,11 @@ sub show_pgn_clicked
 		
 		$line=$self->{pgn_list}->{$self->{pgn_list_size}-1-$index};
 		
-		print Data::Dumper->Dump([$self->{pgn_list}],['$self->{pgn_list}']);
+		#print Data::Dumper->Dump([$self->{pgn_list}],['$self->{pgn_list}']);
 		
 		$extension='pgn';
 		
-		print "boards $coord_y $index $line\n";
+		#print "boards $coord_y $index $line\n";
 	
 	}
 	else
